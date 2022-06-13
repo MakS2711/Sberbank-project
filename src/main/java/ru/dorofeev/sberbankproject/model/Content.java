@@ -3,6 +3,8 @@ package ru.dorofeev.sberbankproject.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -12,7 +14,11 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Content {
+public class Content implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_generator")
     @SequenceGenerator(name = "content_generator", sequenceName = "content_seq")
