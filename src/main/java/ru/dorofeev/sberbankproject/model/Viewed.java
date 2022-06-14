@@ -1,10 +1,12 @@
 package ru.dorofeev.sberbankproject.model;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -22,13 +24,14 @@ public class Viewed implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "viewed_generator")
-    @SequenceGenerator(name = "viewed_generator", sequenceName = "viewed_seq")
-    Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
+
 
     @ManyToOne
-    Users user;
+    private Users user;
 
     @ManyToOne
-    Content content;
+    private Content content;
 }

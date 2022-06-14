@@ -11,6 +11,7 @@ import ru.dorofeev.sberbankproject.model.Viewed;
 import ru.dorofeev.sberbankproject.service.interf.ViewedService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/viewed")
@@ -33,7 +34,7 @@ public class ViewedController {
             description = "Позволяет получить информации по ID пользователя о всех просмотрах рекламы"
     )
     @GetMapping("/{id}")
-    public List<Viewed> getInfoByIdUserAboutViews(@PathVariable Long id) {
+    public List<Viewed> getInfoByIdUserAboutViews(@PathVariable UUID id) {
         return viewedService.getInfoByIdUserAboutViews(id);
     }
 }

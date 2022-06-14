@@ -5,8 +5,9 @@ import org.springframework.stereotype.Repository;
 import ru.dorofeev.sberbankproject.model.Viewed;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface ViewedRepository extends JpaRepository<Viewed, Long> {
-    List<Viewed> findAllByUserId(Long user_id);
+public interface ViewedRepository extends JpaRepository<Viewed, UUID> {
+    List<Viewed> findAllByUserId(UUID user_id);
 }

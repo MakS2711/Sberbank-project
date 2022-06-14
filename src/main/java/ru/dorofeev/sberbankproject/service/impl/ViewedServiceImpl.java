@@ -8,6 +8,7 @@ import ru.dorofeev.sberbankproject.repository.ViewedRepository;
 import ru.dorofeev.sberbankproject.service.interf.ViewedService;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -23,7 +24,7 @@ public class ViewedServiceImpl implements ViewedService {
     }
 
     @Override
-    public List<Viewed> getInfoByIdUserAboutViews(Long id) {
+    public List<Viewed> getInfoByIdUserAboutViews(UUID id) {
         log.info("IN getInfoByIdUserAboutViews() - returned the information by id user: {} about views", id);
 
         return viewedRepository.findAllByUserId(id);

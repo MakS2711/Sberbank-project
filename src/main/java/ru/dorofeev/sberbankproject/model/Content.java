@@ -1,11 +1,13 @@
 package ru.dorofeev.sberbankproject.model;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -20,11 +22,11 @@ public class Content implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_generator")
-    @SequenceGenerator(name = "content_generator", sequenceName = "content_seq")
-    Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
 
-    @ManyToMany(mappedBy = "contentList")
+    @ManyToMany(mappedBy = "contents")
     @ToString.Exclude
-    Set<Page> pageList;
+    private Set<Page> pages;
 }
