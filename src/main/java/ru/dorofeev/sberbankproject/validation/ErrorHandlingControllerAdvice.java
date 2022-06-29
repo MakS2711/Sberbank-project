@@ -14,11 +14,15 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ErrorHandlingControllerAdvice {
     @ResponseBody
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ValidationErrorResponse onMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        final List<Violation> violations = ex.getBindingResult().getFieldErrors().stream().map(
-                        error -> new Violation(error.getField(), error.getDefaultMessage()))
+    public ValidationErrorResponse onMethodArgumentNotValidException(ConstraintViolationException ex) {
+        final List<Violation> violations = ex.getConstraintViolations().stream().map(
+                        violation -> new Violation(
+                                violation.getPropertyPath().toString(),
+                                violation.getMessage()
+                        )
+                )
                 .collect(Collectors.toList());
         return new ValidationErrorResponse(violations);
     }

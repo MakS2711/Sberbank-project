@@ -1,13 +1,18 @@
 package ru.dorofeev.sberbankproject.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,10 +34,11 @@ public class Page implements Serializable {
     private UUID id;
 
     @Column(unique = true)
-    @NotNull(message = "The field should not be null!")
-    @NotBlank(message = "The field should not be empty!")
+    @NotNull(message = "The field page should not be null!")
+    @NotBlank(message = "The field page should not be empty!")
     private String name;
 
+    @JsonManagedReference
     @ManyToMany
     @JoinTable(
             name = "content_page",
@@ -40,5 +46,5 @@ public class Page implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "content_id")
     )
     @ToString.Exclude
-    private Set<Content> contents;
+    private List<Content> contents = new ArrayList<>();
 }

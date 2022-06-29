@@ -1,7 +1,7 @@
 package ru.dorofeev.sberbankproject.controller;
 
-import ru.dorofeev.sberbankproject.model.Content;
+import java.util.List;
 
 public interface AbstractController<T> {
-    void save(Content content);
+    void save(List<T> t);
 }

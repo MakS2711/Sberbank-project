@@ -1,11 +1,15 @@
 package ru.dorofeev.sberbankproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -22,11 +26,10 @@ public class Content implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @ManyToMany(mappedBy = "contents")
+    @JsonBackReference
+    @ManyToMany(mappedBy = "contents", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH})
     @ToString.Exclude
-    private Set<Page> pages;
+    private Set<Page> pages = new HashSet<>();
 }
