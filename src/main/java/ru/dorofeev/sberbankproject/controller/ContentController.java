@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.dorofeev.sberbankproject.mapper.ContentMapper;
 import ru.dorofeev.sberbankproject.model.Content;
 import ru.dorofeev.sberbankproject.model.dto.ContentDto;
+import ru.dorofeev.sberbankproject.model.dto.ContentTargetDto;
 import ru.dorofeev.sberbankproject.service.interf.ContentService;
+import ru.dorofeev.sberbankproject.service.interf.TargetService;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ import java.util.List;
 public class ContentController implements AbstractController<ContentDto> {
     private final ContentService contentService;
     private final ContentMapper contentMapper;
+    private final TargetService targetService;
 
     @Operation(
             summary = "Сохранение контента",
@@ -38,5 +41,14 @@ public class ContentController implements AbstractController<ContentDto> {
     @GetMapping()
     public List<ContentDto> getAll() {
         return contentMapper.toDtoList(contentService.getAll());
+    }
+
+    @Operation(
+            summary = "Таргетирование контента",
+            description = "Позволяет получить таргетированный контент"
+    )
+    @GetMapping("/target")
+    public List<ContentTargetDto> getTarget() {
+        return targetService.getTargetContent();
     }
 }

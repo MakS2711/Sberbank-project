@@ -7,7 +7,6 @@ import java.util.UUID;
 
 public interface ViewedService extends AbstractService<Viewed> {
     List<Viewed> getInfoAboutAllViews();
-
     List<Viewed> getInfoByIdUserAboutViews(UUID id);
 
 
