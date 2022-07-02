@@ -5,5 +5,5 @@ import ru.dorofeev.sberbankproject.model.dto.ContentTargetDto;
 import java.util.List;
 
 public interface TargetService {
-    List<ContentTargetDto> getTargetContent();
+    List<ContentTargetDto> getTargetContentList();
 }

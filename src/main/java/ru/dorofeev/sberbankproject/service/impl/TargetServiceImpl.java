@@ -2,6 +2,8 @@ package ru.dorofeev.sberbankproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -29,27 +31,48 @@ import java.util.Random;
 public class TargetServiceImpl implements TargetService {
     private final int MAX_PRIORITY_CONTENT = 100;
     private final int MIN_PRIORITY_CONTENT = 1;
-    private final int SEND_TIME_TO_CDS = 86400000;
+    private final int SENDING_EVERY_24_HOURS_TO_CDS = 24 * 60 * 60 * 1000; //86_400_000ms.
     private final PageRepository pageRepository;
     private final ViewedRepository viewedRepository;
     private final UsersRepository usersRepository;
     private final Random getPriorityContentRandom;
     private final WebClient webClient;
 
+    @Scheduled(fixedRate = SENDING_EVERY_24_HOURS_TO_CDS)
+    private void getTargetContent() {
+        List<ContentTargetDto> result = getTargetContentList();
+
+        for (ContentTargetDto item : result) {
+            webClient
+                    .post()
+                    .body(Mono.just(item), ContentTargetDto.class)
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, error -> {
+                        log.error("API not found");
+                        return Mono.error(new RuntimeException("API not found"));
+                    })
+                    .onStatus(HttpStatus::is5xxServerError, error -> {
+                        log.error("Server is not responding");
+                        return Mono.error(new RuntimeException("Server is not responding"));
+                    })
+                    .bodyToMono(ContentTargetDto.class)
+                    .block();
+        }
+
+    }
+
     @Override
-    public List<ContentTargetDto> getTargetContent() {
+    public List<ContentTargetDto> getTargetContentList() {
+        List<ContentTargetDto> result = new ArrayList<>();
         List<Page> pages = pageRepository.findAll();
         List<Users> users = usersRepository.findAll();
-        List<Content> allContentPage;
-        List<TargetDto> targetDtoList;
-        List<ContentTargetDto> result = new ArrayList<>();
 
         for (Page page : pages) {
             LocalDate startDate = LocalDate.now();
             LocalDate endDate = startDate.plusDays(1);
 
-            allContentPage = page.getContents();
-            targetDtoList = new ArrayList<>();
+            List<Content> allContentPage = page.getContents();
+            List<TargetDto> targetDtoList = new ArrayList<>();
 
             for (Users user : users) {
                 TargetDto targetDto = new TargetDto();
@@ -86,13 +109,6 @@ public class TargetServiceImpl implements TargetService {
                     .endDate(endDate.toString())
                     .target(targetDtoList)
                     .build());
-        }
-
-        for (ContentTargetDto item : result) {
-            webClient.post()
-                    .body(Mono.just(item), ContentTargetDto.class)
-                    .retrieve()
-                    .bodyToMono(Void.class);
         }
 
         return result;

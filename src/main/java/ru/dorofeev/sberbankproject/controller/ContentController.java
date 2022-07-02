@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.dorofeev.sberbankproject.mapper.ContentMapper;
-import ru.dorofeev.sberbankproject.model.Content;
 import ru.dorofeev.sberbankproject.model.dto.ContentDto;
 import ru.dorofeev.sberbankproject.model.dto.ContentTargetDto;
 import ru.dorofeev.sberbankproject.service.interf.ContentService;
@@ -28,10 +27,7 @@ public class ContentController implements AbstractController<ContentDto> {
     )
     @PostMapping("/save")
     public void save(@RequestBody List<ContentDto> contentDto) {
-
-        List<Content> contents = contentMapper.toContentList(contentDto);
-
-        contentService.save(contents);
+        contentService.save(contentMapper.toContentList(contentDto));
     }
 
     @Operation(
@@ -49,6 +45,6 @@ public class ContentController implements AbstractController<ContentDto> {
     )
     @GetMapping("/target")
     public List<ContentTargetDto> getTarget() {
-        return targetService.getTargetContent();
+        return targetService.getTargetContentList();
     }
 }

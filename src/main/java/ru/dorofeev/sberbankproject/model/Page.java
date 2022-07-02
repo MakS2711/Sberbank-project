@@ -39,7 +39,7 @@ public class Page implements Serializable {
     private String name;
 
     @JsonManagedReference
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "content_page",
             joinColumns = @JoinColumn(name = "page_id"),
