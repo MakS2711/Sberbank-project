@@ -1,4 +1,4 @@
-package ru.dorofeev.sberbankproject.validation;
+package ru.dorofeev.sberbankproject.exception.validation;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

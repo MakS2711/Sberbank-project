@@ -1,11 +1,11 @@
-package ru.dorofeev.sberbankproject.validation;
+package ru.dorofeev.sberbankproject.exception.page;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class Violation {
-    private final String fieldName;
+public class ErrorPageResponse {
+    private final int status;
     private final String message;
 }

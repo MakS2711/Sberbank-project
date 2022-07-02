@@ -29,7 +29,7 @@ public class Content implements Serializable {
     private UUID id;
 
     @JsonBackReference
-    @ManyToMany(mappedBy = "contents", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH})
+    @ManyToMany(mappedBy = "contents")
     @ToString.Exclude
     private Set<Page> pages = new HashSet<>();
 }
