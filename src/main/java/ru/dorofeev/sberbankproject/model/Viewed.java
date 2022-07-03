@@ -28,7 +28,6 @@ public class Viewed implements Serializable {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-
     @ManyToOne
     private Users user;
 

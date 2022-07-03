@@ -3,8 +3,6 @@ package ru.dorofeev.sberbankproject.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -13,7 +11,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -37,7 +34,6 @@ public class Page implements Serializable {
     @NotNull(message = "The field page should not be null!")
     @NotBlank(message = "The field page should not be empty!")
     private String name;
-
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

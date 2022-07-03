@@ -2,7 +2,6 @@ package ru.dorofeev.sberbankproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -38,11 +37,15 @@ public class TargetServiceImpl implements TargetService {
     private final Random getPriorityContentRandom;
     private final WebClient webClient;
 
+    /**
+     * Отправление таргетированного контента раз в сутки на endpoint микросервиса "Content Delivery System".
+     */
     @Scheduled(fixedRate = SENDING_EVERY_24_HOURS_TO_CDS)
     private void getTargetContent() {
         List<ContentTargetDto> result = getTargetContentList();
 
         for (ContentTargetDto item : result) {
+
             webClient
                     .post()
                     .body(Mono.just(item), ContentTargetDto.class)
@@ -57,12 +60,22 @@ public class TargetServiceImpl implements TargetService {
                     })
                     .bodyToMono(ContentTargetDto.class)
                     .block();
+
+            log.info("IN getTargetContent() - content targeting to page: {} sent to endpoint CDS", item.getPage());
         }
 
     }
 
+    /**
+     * Метод отбирает контент для каждого пользователя, фильтруя его в соответствии с уже просмотренным им контентом.
+     * Таргетирование происходит для каждой доступной страницы.
+     *
+     * @return возвращает список таргетированного контента, предназначенного определенной странице.
+     */
     @Override
     public List<ContentTargetDto> getTargetContentList() {
+        log.info("IN getTargetContentList() - Method execution");
+
         List<ContentTargetDto> result = new ArrayList<>();
         List<Page> pages = pageRepository.findAll();
         List<Users> users = usersRepository.findAll();
@@ -77,6 +90,7 @@ public class TargetServiceImpl implements TargetService {
             for (Users user : users) {
                 TargetDto targetDto = new TargetDto();
                 targetDto.setUserGuid(user.getId());
+                List<Content> tempListAllContentPage = new ArrayList<>(allContentPage);
                 List<Viewed> viewed = viewedRepository.findAllByUserId(user.getId());
                 List<Content> viewedContents = new ArrayList<>();
 
@@ -85,12 +99,12 @@ public class TargetServiceImpl implements TargetService {
                 }
 
                 for (Content item : viewedContents) {
-                    allContentPage.remove(item);
+                    tempListAllContentPage.remove(item);
                 }
 
                 List<OfferDto> listOffer = new ArrayList<>();
 
-                for (Content sortedContent : allContentPage) {
+                for (Content sortedContent : tempListAllContentPage) {
                     listOffer.add(OfferDto.builder()
                             .contentGuid(sortedContent.getId())
                             .priority((byte) (getPriorityContentRandom.nextInt((MAX_PRIORITY_CONTENT + 1) - MIN_PRIORITY_CONTENT) + MIN_PRIORITY_CONTENT))

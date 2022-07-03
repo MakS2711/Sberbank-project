@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.dorofeev.sberbankproject.exception.page.NoSuchPageException;
 import ru.dorofeev.sberbankproject.mapper.ContentMapper;
 import ru.dorofeev.sberbankproject.model.dto.ContentDto;
 import ru.dorofeev.sberbankproject.model.dto.ContentTargetDto;
