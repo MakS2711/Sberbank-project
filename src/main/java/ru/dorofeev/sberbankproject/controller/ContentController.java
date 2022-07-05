@@ -45,6 +45,7 @@ public class ContentController implements AbstractController<ContentDto> {
     )
     @GetMapping("/target")
     public List<ContentTargetDto> getTarget() {
-        return targetService.getTargetContentList();
+        List<ContentTargetDto> targetContentList = targetService.getTargetContentList();
+        return targetContentList;
     }
 }

@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TargetService {
     List<ContentTargetDto> getTargetContentList();
+    void sendTargetContent();
 }

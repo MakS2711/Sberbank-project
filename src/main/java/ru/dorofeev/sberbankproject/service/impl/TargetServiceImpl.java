@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 import reactor.core.publisher.Mono;
 import ru.dorofeev.sberbankproject.model.Content;
 import ru.dorofeev.sberbankproject.model.Page;
@@ -41,7 +42,8 @@ public class TargetServiceImpl implements TargetService {
      * Отправление таргетированного контента раз в сутки на endpoint микросервиса "Content Delivery System".
      */
     @Scheduled(fixedRate = SENDING_EVERY_24_HOURS_TO_CDS)
-    private void getTargetContent() {
+    @Override
+    public void sendTargetContent() {
         List<ContentTargetDto> result = getTargetContentList();
 
         for (ContentTargetDto item : result) {
@@ -59,6 +61,7 @@ public class TargetServiceImpl implements TargetService {
                         return Mono.error(new RuntimeException("Server is not responding"));
                     })
                     .bodyToMono(ContentTargetDto.class)
+                    .doOnError(WebClientRequestException.class, e -> log.error("Connection denied to API CDS"))
                     .block();
 
             log.info("IN getTargetContent() - content targeting to page: {} sent to endpoint CDS", item.getPage());
@@ -99,7 +102,7 @@ public class TargetServiceImpl implements TargetService {
                 }
 
                 for (Content item : viewedContents) {
-                    tempListAllContentPage.remove(item);
+                    tempListAllContentPage.removeIf(el -> el.getId().equals(item.getId()));
                 }
 
                 List<OfferDto> listOffer = new ArrayList<>();
