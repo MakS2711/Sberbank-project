@@ -17,8 +17,9 @@ public class SwaggerConfig {
                                 .title("Sberbank-project")
                                 .version("1.0.0")
                                 .description("REST-API проект, разрабатываемый в рамках курсовой работы Сбербанка, " +
-                                        "посвещенный разработке микросервера \"Advertisement Management System\" " +
-                                        "для системы персонального контента.")
+                                        "посвещенный созданию микросервера \"Advertisement Management System\" " +
+                                        "для системы персонализированного контента."
+                                )
                                 .contact(
                                         new Contact()
                                                 .email("Mektogon385@mail.ru")

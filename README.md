@@ -1,5 +1,5 @@
 # Sberbank-project
-REST-API проект, разрабатываемый в рамках курсовой работы Сбербанка, посвещенный разработке микросервера "Advertisement Management System" для системы персонального контента.
+REST-API проект, разрабатываемый в рамках курсовой работы Сбербанка, посвещенный созданию микросервера "Advertisement Management System" для системы персонализированного контента.
 ## Технологии
 Проект разрабатывался с использованием: 
 - Spring Framework (Core, Boot, Data JPA, MVC)
@@ -7,21 +7,45 @@ REST-API проект, разрабатываемый в рамках курсо
 - PostgreSQL
 - Swagger
 - SLF4J-reload4j
+- MapStruct
 
 ## Как запустить? 
-Для запуска web-приложения необходимо выполнить ряд действий:
-1. Создать базу данных, с использованием СУБД PostgreSQL
-2. Отредактировать application.properties, внеся правки в следующие места
-   > spring.datasource.url=jdbc:postgresql://localhost:5432/__Имя БД__
+Для запуска web-приложения необходимо выполнить следующие шаги:
+
+1. Создать три базы данных, с использованием СУБД PostgreSQL:
+
+   1.1 "sberbank_project" -- для основного проекта.
+
+   1.2 "sberbank_project_test" -- для тестов.
+
+   1.3 "cds_test_client" -- для Stub-project, имитации микросервиса "Content Delivery System".
+   >   Названия могут быть произвольными.
+
+2. Отредактировать application.properties в
+
+   /src/main/resources/
+
+   /src/test/resources/
+
+   /Stub-project/src/main/resources/, внеся правки в следующие места:
+   > spring.datasource.url=jdbc:postgresql://localhost:5432/__Имя соответствующей БД__
 
    > spring.datasource.username=__Имя вашего пользователя СУБД__
 
    > spring.datasource.password=__Пароль__
-3. Ввести следующую команду в Terminal: 
-   > mvn spring-boot:run
 
-Для запуска тестов, введите:
+3. Ввести следующие команды в Terminal:
+   > cd .\Stub-project\
+
+   > mvn clean spring-boot:run
+
+   > Создать новый Terminal.
+
+   > mvn clean spring-boot:run
+
+Для запуска тестов выполните следующую команду в Terminal:
 > mvn clean test
+
 ## Основная информация
 Основные требования:
 1. Хранение и получение информации о контенте от Content Management System (endpoint для CMS, для сохранения контента content/save).
