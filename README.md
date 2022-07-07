@@ -1,5 +1,5 @@
 # Sberbank-project
-REST-API проект, разрабатываемый в рамках курсовой работы Сбербанка, посвещенный созданию микросервера "Advertisement Management System" для системы персонализированного контента.
+REST-API проект, разрабатываемый в рамках курсовой работы Сбербанка, посвященный созданию микросервера "Advertisement Management System" для системы персонализированного контента.
 ## Технологии
 Проект разрабатывался с использованием: 
 - Spring Framework (Core, Boot, Data JPA, MVC)
@@ -14,11 +14,11 @@ REST-API проект, разрабатываемый в рамках курсо
 
 1. Создать три базы данных, с использованием СУБД PostgreSQL:
 
-   1.1 "sberbank_project" -- для основного проекта.
+   1.1 "sberbank_project" - для основного проекта.
 
-   1.2 "sberbank_project_test" -- для тестов.
+   1.2 "sberbank_project_test" - для тестов.
 
-   1.3 "cds_test_client" -- для Stub-project, имитации микросервиса "Content Delivery System".
+   1.3 "cds_test_client" - для Stub-project, имитации микросервиса "Content Delivery System".
    >   Названия могут быть произвольными.
 
 2. Отредактировать application.properties в

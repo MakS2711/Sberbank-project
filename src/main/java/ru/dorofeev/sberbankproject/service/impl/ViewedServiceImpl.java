@@ -16,11 +16,6 @@ import java.util.UUID;
 public class ViewedServiceImpl implements ViewedService {
     private final ViewedRepository viewedRepository;
 
-    /**
-     * Сохранение просмотренного контента.
-     *
-     * @param viewedList список сохраняемого контента.
-     */
     @Override
     public void save(List<Viewed> viewedList) {
         viewedRepository.saveAll(viewedList);
@@ -28,9 +23,6 @@ public class ViewedServiceImpl implements ViewedService {
         log.info("IN saveAll() - count views: {} saved", viewedList.size());
     }
 
-    /**
-     * @return Метод возвращает весь просмотренный контент всех пользователей.
-     */
     @Override
     public List<Viewed> getInfoAboutAllViews() {
         log.info("IN getInfoAboutViews() - returned the information about all views");
@@ -38,10 +30,6 @@ public class ViewedServiceImpl implements ViewedService {
         return viewedRepository.findAll();
     }
 
-    /**
-     * @param id пользователя, по которому совершается поиск.
-     * @return Метод возвращает просмотренный контент определенного пользователя.
-     */
     @Override
     public List<Viewed> getInfoByIdUserAboutViews(UUID id) {
         log.info("IN getInfoByIdUserAboutViews() - returned the information by id user: {} about views", id);

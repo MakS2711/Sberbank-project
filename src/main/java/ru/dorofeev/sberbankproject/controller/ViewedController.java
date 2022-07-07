@@ -4,10 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.dorofeev.sberbankproject.mapper.ViewedMapper;
-import ru.dorofeev.sberbankproject.model.Viewed;
 import ru.dorofeev.sberbankproject.model.dto.ViewedDto;
-import ru.dorofeev.sberbankproject.service.interf.ViewedService;
+import ru.dorofeev.sberbankproject.service.dto.interf.ViewedDtoService;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,16 +14,16 @@ import java.util.UUID;
 @RequestMapping("/api/v1/viewed")
 @RequiredArgsConstructor
 @Tag(name = "Viewed Controller", description = "Управляет просмотрами рекламы")
-public class ViewedController implements AbstractController<ViewedDto>{
-    private final ViewedService viewedService;
-    private final ViewedMapper viewedMapper;
+public class ViewedController implements AbstractController<ViewedDto> {
+    private final ViewedDtoService viewedDtoService;
+
     @Operation(
             summary = "Сохранение просмотров",
             description = "Позволяет сохранить информацию о просмотрах пользователя"
     )
     @PostMapping("/save")
     public void save(@RequestBody List<ViewedDto> viewedDto) {
-        viewedService.save(viewedMapper.toViewedList(viewedDto));
+        viewedDtoService.save(viewedDto);
     }
 
     @Operation(
@@ -34,7 +32,7 @@ public class ViewedController implements AbstractController<ViewedDto>{
     )
     @GetMapping()
     public List<ViewedDto> getInfoAboutAllViews() {
-        return viewedMapper.toDtoList(viewedService.getInfoAboutAllViews());
+        return viewedDtoService.getInfoAboutAllViews();
     }
 
     @Operation(
@@ -43,6 +41,6 @@ public class ViewedController implements AbstractController<ViewedDto>{
     )
     @GetMapping("/{id}")
     public List<ViewedDto> getInfoByIdUserAboutViews(@PathVariable UUID id) {
-        return viewedMapper.toDtoList(viewedService.getInfoByIdUserAboutViews(id));
+        return viewedDtoService.getInfoByIdUserAboutViews(id);
     }
 }

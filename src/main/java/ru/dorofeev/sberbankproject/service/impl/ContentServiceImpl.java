@@ -15,11 +15,6 @@ import java.util.List;
 public class ContentServiceImpl implements ContentService {
     private final ContentRepository contentRepository;
 
-    /**
-     * Сохранение контента.
-     *
-     * @param content список сохраняемого контента.
-     */
     @Override
     public void save(List<Content> content) {
 
@@ -28,9 +23,6 @@ public class ContentServiceImpl implements ContentService {
         log.info("IN save() - count content: {} saved", content.size());
     }
 
-    /**
-     * @return метод возвращает весь сохраненный контент.
-     */
     public List<Content> getAll() {
         log.info("IN getInfoAboutViews() - returned the information about all views");
 

@@ -4,10 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.dorofeev.sberbankproject.mapper.ContentMapper;
 import ru.dorofeev.sberbankproject.model.dto.ContentDto;
 import ru.dorofeev.sberbankproject.model.dto.ContentTargetDto;
-import ru.dorofeev.sberbankproject.service.interf.ContentService;
+import ru.dorofeev.sberbankproject.service.dto.interf.ContentDtoService;
 import ru.dorofeev.sberbankproject.service.interf.TargetService;
 
 import java.util.List;
@@ -17,8 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Content Controller", description = "Управляет контентом")
 public class ContentController implements AbstractController<ContentDto> {
-    private final ContentService contentService;
-    private final ContentMapper contentMapper;
+    private final ContentDtoService contentDtoService;
     private final TargetService targetService;
 
     @Operation(
@@ -27,7 +25,7 @@ public class ContentController implements AbstractController<ContentDto> {
     )
     @PostMapping("/save")
     public void save(@RequestBody List<ContentDto> contentDto) {
-        contentService.save(contentMapper.toContentList(contentDto));
+        contentDtoService.save(contentDto);
     }
 
     @Operation(
@@ -36,7 +34,7 @@ public class ContentController implements AbstractController<ContentDto> {
     )
     @GetMapping()
     public List<ContentDto> getAll() {
-        return contentMapper.toDtoList(contentService.getAll());
+        return contentDtoService.getAll();
     }
 
     @Operation(
@@ -45,7 +43,6 @@ public class ContentController implements AbstractController<ContentDto> {
     )
     @GetMapping("/target")
     public List<ContentTargetDto> getTarget() {
-        List<ContentTargetDto> targetContentList = targetService.getTargetContentList();
-        return targetContentList;
+        return targetService.getTargetContentList();
     }
 }

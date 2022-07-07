@@ -38,9 +38,6 @@ public class TargetServiceImpl implements TargetService {
     private final Random getPriorityContentRandom;
     private final WebClient webClient;
 
-    /**
-     * Отправление таргетированного контента раз в сутки на endpoint микросервиса "Content Delivery System".
-     */
     @Scheduled(fixedRate = SENDING_EVERY_24_HOURS_TO_CDS)
     @Override
     public void sendTargetContent() {
@@ -69,12 +66,6 @@ public class TargetServiceImpl implements TargetService {
 
     }
 
-    /**
-     * Метод отбирает контент для каждого пользователя, фильтруя его в соответствии с уже просмотренным им контентом.
-     * Таргетирование происходит для каждой доступной страницы.
-     *
-     * @return возвращает список таргетированного контента, предназначенного определенной странице.
-     */
     @Override
     public List<ContentTargetDto> getTargetContentList() {
         log.info("IN getTargetContentList() - Method execution");
